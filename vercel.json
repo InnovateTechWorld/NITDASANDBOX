@@ -1,0 +1,19 @@
+{
+    "rewrites": [
+      { "source": "/dashboard", "destination": "/index.html" },
+
+      { "source": "/login", "destination": "/index.html" },
+      { "source": "/register", "destination": "/index.html" },
+      { "source": "/admin", "destination": "/index.html" },
+      { "source": "/admin/applications", "destination": "/index.html" },
+      { "source": "/admin/applications/:path*", "destination": "/index.html" },
+      { "source": "/admin/progress-reports", "destination": "/index.html" },
+      { "source": "/admin/guidelines", "destination": "/index.html" },
+      { "source": "/business", "destination": "/index.html" },
+      { "source": "/business/apply", "destination": "/index.html" },
+      { "source": "/business/test-cases", "destination": "/index.html" },
+      { "source": "/business/progress", "destination": "/index.html" },
+      { "source": "/business/chatbot", "destination": "/index.html" },
+      { "source": "/business/guidelines", "destination": "/index.html" }
+    ]
+}

@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Send, Bot, User, Clock, ChevronRight, ChevronDown } from 'lucide-react';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 interface Message {
   id: string;
@@ -19,6 +20,77 @@ const ComplianceChatbot = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [showFaqs, setShowFaqs] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const gemini = new GoogleGenerativeAI("AIzaSyAvk81NFoaD-2fcXJPpVTPWYT7NPexPrh8").getGenerativeModel({
+    model: "gemini-2.0-flash",
+    systemInstruction: `NITDA Compliance Chatbot
+Purpose:
+You are an AI-powered Compliance Assistant for the NITDA eCommerce Regulatory Sandbox. Your job is to help Nigerian startups and digital businesses understand regulatory requirements, prepare for sandbox participation, and comply with applicable laws.
+
+🎯 Core Responsibilities
+Explain NDPR and relevant laws
+Provide clear, beginner-friendly explanations of Nigerian data protection (NDPR), consumer protection, and digital commerce laws.
+
+Assist with Sandbox Readiness
+Guide users through what is expected before and during sandbox testing – including test case preparation, data protection planning, and documentation.
+
+Answer FAQs and Interpret Guidelines
+Respond to user questions regarding sandbox guidelines and simplify legal jargon in documents uploaded by NITDA.
+
+Provide Actionable Compliance Tips
+Suggest next steps, documents to prepare, or common red flags NITDA reviewers may check for.
+
+Suggest Test Cases (when prompted)
+Recommend basic compliance-oriented test cases for businesses, based on their product category and declared innovation.
+
+Document Support (Optional if integrated)
+If the user uploads a pitch deck or business doc, analyze it and point out missing compliance elements or suggest improvements.
+
+🧠 Behavior and Tone
+Be clear, respectful, and helpful.
+
+Always reference sandbox or regulatory context.
+
+Never give legal advice—only guidance based on publicly available regulations and sandbox documentation.
+
+Default to explaining in simple English unless the user requests legal terms.
+
+Avoid assumptions. Ask clarifying questions when necessary.
+
+🧩 Input You Will Receive
+Questions typed by the user.
+
+Their product type or sandbox category (e.g. logistics, payments, social commerce).
+
+Their current status (e.g. "Just applied", "In testing", "Got feedback").
+
+💬 Example Prompts and Responses
+🧾 Prompt:
+What do I need to upload for my sandbox application?
+
+Response:
+To apply, you’ll need to upload your business pitch deck (PDF), include a short description of your product, select a category, and explain the innovation. NITDA will review to ensure it aligns with regulatory goals.
+
+🔐 Prompt:
+Is my product compliant with NDPR?
+
+Response:
+NDPR compliance requires you to inform users about data use, get consent before collecting data, and store data securely. You may need a privacy policy, opt-in forms, and a clear user agreement. I can help you check each step—want to go through them?
+
+🧪 Prompt:
+What test case can I run to show my checkout process is secure?
+
+Response:
+Here’s a sample test case:
+Test Case Name: Secure Checkout Flow
+Objective: Ensure user data (payment, address) is transmitted over HTTPS and stored securely.
+Pass Condition: All data submissions are encrypted; users see confirmation message.
+
+📌 Limitations
+You don’t give legal advice—direct users to consult legal experts when in doubt.
+
+You only work within the sandbox ecosystem and can’t help with unrelated business tasks.`,
+  });
 
   // Sample FAQs related to regulatory compliance
   const faqs: FaqItem[] = [
@@ -56,30 +128,32 @@ const ComplianceChatbot = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Mock AI response generation
+  // AI response generation
   const generateResponse = async (userMessage: string): Promise<string> => {
-    // In a real implementation, this would call an AI service
-    // For the demo, we'll simulate responses based on keywords
-    
-    const lowerCaseMessage = userMessage.toLowerCase();
-    
-    // Simulate typing delay
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    if (lowerCaseMessage.includes('data protection') || lowerCaseMessage.includes('ndpr')) {
-      return "The Nigeria Data Protection Regulation (NDPR) requires businesses to implement appropriate technical and organizational measures to protect personal data. This includes:\n\n1. Data encryption\n2. Access controls\n3. Regular security assessments\n4. Data processing agreements with third parties\n5. Appointing a Data Protection Officer if you process large volumes of data\n\nYour eCommerce solution should have features that allow users to exercise their rights under NDPR, including the right to access, correct, and delete their data.";
+    try {
+      const result = await gemini.generateContent(userMessage);
+      const responseText = result.response.text();
+      return responseText;
+    } catch (error) {
+      console.error('Error generating response:', error);
+      // Fallback to mock data if AI fails
+      const lowerCaseMessage = userMessage.toLowerCase();
+
+      if (lowerCaseMessage.includes('data protection') || lowerCaseMessage.includes('ndpr')) {
+        return "The Nigeria Data Protection Regulation (NDPR) requires businesses to implement appropriate technical and organizational measures to protect personal data. This includes:\n\n1. Data encryption\n2. Access controls\n3. Regular security assessments\n4. Data processing agreements with third parties\n5. Appointing a Data Protection Officer if you process large volumes of data\n\nYour eCommerce solution should have features that allow users to exercise their rights under NDPR, including the right to access, correct, and delete their data.";
+      }
+
+      if (lowerCaseMessage.includes('payment') || lowerCaseMessage.includes('transaction')) {
+        return "For payment processing in your eCommerce solution, you need to comply with both NITDA regulations and Central Bank of Nigeria (CBN) requirements. Key compliance points include:\n\n- Implementing PCI DSS standards for handling payment card data\n- Using secure, encrypted connections for all payment transactions\n- Maintaining clear records of all transactions\n- Providing detailed receipts to customers\n- Having a clear refund policy\n\nIn the sandbox environment, you should demonstrate how your solution maintains the integrity and security of payment information.";
+      }
+
+      if (lowerCaseMessage.includes('test case') || lowerCaseMessage.includes('testing')) {
+        return "Test cases in the NITDA Sandbox are designed to verify both regulatory compliance and technical functionality. When working on test cases:\n\n1. Follow the specific requirements provided for each test\n2. Document your approach thoroughly\n3. Include screenshots or logs as evidence\n4. Be transparent about any challenges encountered\n5. If you fail a test, explain what corrective measures you've implemented\n\nRemember that the goal is to demonstrate that your solution can operate safely within Nigerian regulatory frameworks.";
+      }
+
+      // Default response
+      return "Thank you for your question. As a compliance assistant, I can help you navigate regulatory requirements for your eCommerce solution in Nigeria.\n\nTo provide more specific guidance, could you tell me more about:\n\n- What aspect of compliance you're concerned about?\n- What type of data your solution handles?\n- Who your target users are?\n\nThis will help me give you more tailored advice relevant to your situation.";
     }
-    
-    if (lowerCaseMessage.includes('payment') || lowerCaseMessage.includes('transaction')) {
-      return "For payment processing in your eCommerce solution, you need to comply with both NITDA regulations and Central Bank of Nigeria (CBN) requirements. Key compliance points include:\n\n- Implementing PCI DSS standards for handling payment card data\n- Using secure, encrypted connections for all payment transactions\n- Maintaining clear records of all transactions\n- Providing detailed receipts to customers\n- Having a clear refund policy\n\nIn the sandbox environment, you should demonstrate how your solution maintains the integrity and security of payment information.";
-    }
-    
-    if (lowerCaseMessage.includes('test case') || lowerCaseMessage.includes('testing')) {
-      return "Test cases in the NITDA Sandbox are designed to verify both regulatory compliance and technical functionality. When working on test cases:\n\n1. Follow the specific requirements provided for each test\n2. Document your approach thoroughly\n3. Include screenshots or logs as evidence\n4. Be transparent about any challenges encountered\n5. If you fail a test, explain what corrective measures you've implemented\n\nRemember that the goal is to demonstrate that your solution can operate safely within Nigerian regulatory frameworks.";
-    }
-    
-    // Default response
-    return "Thank you for your question. As a compliance assistant, I can help you navigate regulatory requirements for your eCommerce solution in Nigeria.\n\nTo provide more specific guidance, could you tell me more about:\n\n- What aspect of compliance you're concerned about?\n- What type of data your solution handles?\n- Who your target users are?\n\nThis will help me give you more tailored advice relevant to your situation.";
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -101,7 +175,8 @@ const ComplianceChatbot = () => {
     
     // Generate and add bot response
     try {
-      const responseText = await generateResponse(inputValue);
+      const result = await gemini.generateContent(inputValue);
+      const responseText = result.response.text();
       const botMessage: Message = {
         id: `bot-${Date.now()}`,
         content: responseText,
