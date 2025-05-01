@@ -1,0 +1,15 @@
+.formatted-response {
+    @apply whitespace-pre-line;
+  }
+  
+  .formatted-response br {
+    @apply block my-2;
+  }
+  
+  .formatted-response strong {
+    @apply font-semibold;
+  }
+  
+  .formatted-response ul {
+    @apply my-2 pl-6;
+  }

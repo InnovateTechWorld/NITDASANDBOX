@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
 import { Send, Bot, User, Clock, ChevronRight, ChevronDown } from 'lucide-react';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { formatModelResponse } from './Formatting';
 
 interface Message {
   id: string;
-  content: string;
+  content: string | JSX.Element;
   sender: 'user' | 'bot';
   timestamp: Date;
 }
@@ -20,6 +21,7 @@ const ComplianceChatbot = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [showFaqs, setShowFaqs] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [chat, setChat] = useState<any>(null);
 
   const gemini = new GoogleGenerativeAI("AIzaSyAvk81NFoaD-2fcXJPpVTPWYT7NPexPrh8").getGenerativeModel({
     model: "gemini-2.0-flash",
@@ -121,6 +123,25 @@ You only work within the sandbox ecosystem and can’t help with unrelated busin
       timestamp: new Date()
     };
     setMessages([initialMessage]);
+
+    const formattedHistory = [{
+      role: "user",
+      parts: [{ text: "Hi, I need help with NITDA compliance." }]
+    }, {
+      role: "model",
+      parts: [{ text: initialMessage.content }]
+    }];
+  
+    const newChat = gemini.startChat({
+      history: [{
+        role: "user",
+        parts: [{ text: "Hi, I need help with NITDA compliance." }]
+      }, {
+        role: "model",
+        parts: [{ text: initialMessage.content as string }]
+      }],
+    });
+    setChat(newChat);
   }, []);
 
   // Scroll to bottom when messages change
@@ -131,9 +152,19 @@ You only work within the sandbox ecosystem and can’t help with unrelated busin
   // AI response generation
   const generateResponse = async (userMessage: string): Promise<string> => {
     try {
-      const result = await gemini.generateContent(userMessage);
-      const responseText = result.response.text();
-      return responseText;
+      const result = await chat.sendMessage(userMessage);
+      const responseText = await result.text();
+      // Format the response text
+      const formattedResponse = responseText
+        // Handle bold text (**text**)
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    // Handle bullet points
+    .replace(/\* /g, '<br/>• ')
+    // Handle multiple line breaks
+    .replace(/\n\n/g, '<br/><br/>')
+    // Handle single line breaks
+    .replace(/\n/g, '<br/>');
+      return formattedResponse;
     } catch (error) {
       console.error('Error generating response:', error);
       // Fallback to mock data if AI fails
@@ -161,7 +192,6 @@ You only work within the sandbox ecosystem and can’t help with unrelated busin
     
     if (!inputValue.trim()) return;
     
-    // Add user message
     const userMessage: Message = {
       id: `user-${Date.now()}`,
       content: inputValue,
@@ -172,14 +202,21 @@ You only work within the sandbox ecosystem and can’t help with unrelated busin
     setMessages(prev => [...prev, userMessage]);
     setInputValue('');
     setIsTyping(true);
+  
+    if (!chat) {
+      console.error("Chat is not initialized.");
+      return;
+    }
     
-    // Generate and add bot response
     try {
-      const result = await gemini.generateContent(inputValue);
-      const responseText = result.response.text();
+      const result = await chat.sendMessage(inputValue);
+      const response = await result.response;
+      const responseText = response.text();
+      const formattedText = formatModelResponse(responseText);
+      
       const botMessage: Message = {
         id: `bot-${Date.now()}`,
-        content: responseText,
+        content: <div dangerouslySetInnerHTML={{ __html: formattedText }} className="formatted-response" />,
         sender: 'bot',
         timestamp: new Date()
       };
@@ -283,6 +320,8 @@ You only work within the sandbox ecosystem and can’t help with unrelated busin
               <div ref={messagesEndRef} />
             </div>
           </div>
+
+          
           
           {/* Input area */}
           <div className="border-t border-gray-200 p-4 bg-gray-50">
