@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BookOpen, Save, Plus, Trash2, ChevronUp, ChevronDown, Eye, X } from 'lucide-react';
 import { toast } from 'react-toastify';
-
 interface GuidelineSection {
   id: string;
   title: string;
@@ -28,7 +27,7 @@ const GuidelinesEditor = () => {
   const [newCategoryTitle, setNewCategoryTitle] = useState('');
   const [newSectionTitle, setNewSectionTitle] = useState('');
   const [isSaving, setIsSaving] = useState(false);
-  
+
   // Load initial guidelines data
   useEffect(() => {
     // In a real app, this would be an API call
@@ -185,9 +184,9 @@ const GuidelinesEditor = () => {
         ]
       }
     ];
-    
+
     setGuidelines(initialGuidelines);
-    
+
     // Default selection
     if (initialGuidelines.length > 0) {
       setSelectedCategory(initialGuidelines[0].id);
@@ -197,16 +196,16 @@ const GuidelinesEditor = () => {
         setEditingContent(initialGuidelines[0].sections[0].content);
       }
     }
-    
+
   }, []);
-  
+
   // Handlers for selection
   const handleCategorySelect = (categoryId: string) => {
     if (hasUnsavedChanges) {
       setShowDiscardModal(true);
       return;
     }
-    
+
     setSelectedCategory(categoryId);
     const category = guidelines.find(c => c.id === categoryId);
     if (category && category.sections.length > 0) {
@@ -219,13 +218,13 @@ const GuidelinesEditor = () => {
       setEditingContent('');
     }
   };
-  
+
   const handleSectionSelect = (sectionId: string) => {
     if (hasUnsavedChanges) {
       setShowDiscardModal(true);
       return;
     }
-    
+
     setSelectedSection(sectionId);
     const category = guidelines.find(c => c.id === selectedCategory);
     if (category) {
@@ -236,27 +235,27 @@ const GuidelinesEditor = () => {
       }
     }
   };
-  
+
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditingTitle(e.target.value);
     setHasUnsavedChanges(true);
   };
-  
+
   const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setEditingContent(e.target.value);
     setHasUnsavedChanges(true);
   };
-  
+
   // Save changes
   const handleSaveChanges = async () => {
     if (!selectedCategory || !selectedSection) return;
-    
+
     setIsSaving(true);
-    
+
     try {
       // In a real app, this would be an API call to update the guidelines
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       // Update the guidelines data
       const updatedGuidelines = guidelines.map(category => {
         if (category.id === selectedCategory) {
@@ -276,7 +275,7 @@ const GuidelinesEditor = () => {
         }
         return category;
       });
-      
+
       setGuidelines(updatedGuidelines);
       setHasUnsavedChanges(false);
       toast.success('Guidelines updated successfully');
@@ -286,11 +285,11 @@ const GuidelinesEditor = () => {
       setIsSaving(false);
     }
   };
-  
+
   // Discard changes
   const handleDiscardChanges = () => {
     setShowDiscardModal(false);
-    
+
     // Reset to saved content
     const category = guidelines.find(c => c.id === selectedCategory);
     if (category) {
@@ -300,34 +299,34 @@ const GuidelinesEditor = () => {
         setEditingContent(section.content);
       }
     }
-    
+
     setHasUnsavedChanges(false);
   };
-  
+
   // Add new category
   const handleAddCategory = async () => {
     if (!newCategoryTitle.trim()) {
       toast.error('Category title is required');
       return;
     }
-    
+
     try {
       // In a real app, this would be an API call
       await new Promise(resolve => setTimeout(resolve, 500));
-      
+
       const categoryId = `category-${Date.now()}`;
       const newCategory: GuidelineCategory = {
         id: categoryId,
         title: newCategoryTitle.trim(),
         sections: []
       };
-      
+
       setGuidelines([...guidelines, newCategory]);
       setSelectedCategory(categoryId);
       setSelectedSection(null);
       setEditingTitle('');
       setEditingContent('');
-      
+
       setShowAddCategoryModal(false);
       setNewCategoryTitle('');
       toast.success('Category added successfully');
@@ -335,30 +334,30 @@ const GuidelinesEditor = () => {
       toast.error('Failed to add category');
     }
   };
-  
+
   // Add new section
   const handleAddSection = async () => {
     if (!selectedCategory) {
       toast.error('Please select a category first');
       return;
     }
-    
+
     if (!newSectionTitle.trim()) {
       toast.error('Section title is required');
       return;
     }
-    
+
     try {
       // In a real app, this would be an API call
       await new Promise(resolve => setTimeout(resolve, 500));
-      
+
       const sectionId = `section-${Date.now()}`;
       const newSection: GuidelineSection = {
         id: sectionId,
         title: newSectionTitle.trim(),
         content: '<p>Add content here...</p>'
       };
-      
+
       const updatedGuidelines = guidelines.map(category => {
         if (category.id === selectedCategory) {
           return {
@@ -368,12 +367,12 @@ const GuidelinesEditor = () => {
         }
         return category;
       });
-      
+
       setGuidelines(updatedGuidelines);
       setSelectedSection(sectionId);
       setEditingTitle(newSection.title);
       setEditingContent(newSection.content);
-      
+
       setShowAddSectionModal(false);
       setNewSectionTitle('');
       toast.success('Section added successfully');
@@ -381,19 +380,19 @@ const GuidelinesEditor = () => {
       toast.error('Failed to add section');
     }
   };
-  
+
   // Delete section
   const handleDeleteSection = async () => {
     if (!selectedCategory || !selectedSection) return;
-    
+
     if (!window.confirm('Are you sure you want to delete this section? This action cannot be undone.')) {
       return;
     }
-    
+
     try {
       // In a real app, this would be an API call
       await new Promise(resolve => setTimeout(resolve, 500));
-      
+
       const updatedGuidelines = guidelines.map(category => {
         if (category.id === selectedCategory) {
           return {
@@ -403,9 +402,9 @@ const GuidelinesEditor = () => {
         }
         return category;
       });
-      
+
       setGuidelines(updatedGuidelines);
-      
+
       // Select first section of current category, if any
       const updatedCategory = updatedGuidelines.find(c => c.id === selectedCategory);
       if (updatedCategory && updatedCategory.sections.length > 0) {
@@ -417,56 +416,56 @@ const GuidelinesEditor = () => {
         setEditingTitle('');
         setEditingContent('');
       }
-      
+
       setHasUnsavedChanges(false);
       toast.success('Section deleted successfully');
     } catch (error) {
       toast.error('Failed to delete section');
     }
   };
-  
+
   // Move section up or down
   const handleMoveSection = async (direction: 'up' | 'down') => {
     if (!selectedCategory || !selectedSection) return;
-    
+
     const categoryIndex = guidelines.findIndex(c => c.id === selectedCategory);
     if (categoryIndex === -1) return;
-    
+
     const category = guidelines[categoryIndex];
     const sectionIndex = category.sections.findIndex(s => s.id === selectedSection);
     if (sectionIndex === -1) return;
-    
+
     // Check bounds
     if (direction === 'up' && sectionIndex === 0) return;
     if (direction === 'down' && sectionIndex === category.sections.length - 1) return;
-    
+
     // Create new sections array with swapped elements
     const newSections = [...category.sections];
     const targetIndex = direction === 'up' ? sectionIndex - 1 : sectionIndex + 1;
     [newSections[sectionIndex], newSections[targetIndex]] = [newSections[targetIndex], newSections[sectionIndex]];
-    
+
     // Update guidelines
     const updatedGuidelines = [...guidelines];
     updatedGuidelines[categoryIndex] = {
       ...category,
       sections: newSections
     };
-    
+
     setGuidelines(updatedGuidelines);
     toast.success(`Section moved ${direction}`);
   };
-  
+
   // Get current category and section
   const currentCategory = guidelines.find(c => c.id === selectedCategory);
   const currentSection = currentCategory?.sections.find(s => s.id === selectedSection);
-  
+
   return (
     <div>
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-800">Guidelines Editor</h1>
         <p className="text-gray-600">Manage and update regulatory sandbox guidelines</p>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         {/* Sidebar */}
         <div className="md:col-span-1">
@@ -494,26 +493,24 @@ const GuidelinesEditor = () => {
                   {guidelines.map((category) => (
                     <li key={category.id}>
                       <div
-                        className={`flex items-center justify-between p-2 rounded-md cursor-pointer ${
-                          selectedCategory === category.id
+                        className={`flex items-center justify-between p-2 rounded-md cursor-pointer ${selectedCategory === category.id
                             ? 'bg-emerald-50 text-emerald-700 font-medium'
                             : 'text-gray-700 hover:bg-gray-50'
-                        }`}
+                          }`}
                         onClick={() => handleCategorySelect(category.id)}
                       >
                         <span>{category.title}</span>
                       </div>
-                      
+
                       {selectedCategory === category.id && (
                         <ul className="mt-1 ml-3 border-l border-gray-200 pl-2 space-y-1">
                           {category.sections.map((section) => (
                             <li key={section.id}>
                               <button
-                                className={`w-full text-left px-2 py-1 text-sm rounded-md ${
-                                  selectedSection === section.id
+                                className={`w-full text-left px-2 py-1 text-sm rounded-md ${selectedSection === section.id
                                     ? 'bg-emerald-50 text-emerald-700 font-medium'
                                     : 'text-gray-600 hover:bg-gray-50'
-                                }`}
+                                  }`}
                                 onClick={() => handleSectionSelect(section.id)}
                               >
                                 {section.title}
@@ -538,7 +535,7 @@ const GuidelinesEditor = () => {
             </div>
           </div>
         </div>
-        
+
         {/* Editor */}
         <div className="md:col-span-3">
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -551,11 +548,10 @@ const GuidelinesEditor = () => {
                   <>
                     <button
                       onClick={() => setIsPreviewMode(!isPreviewMode)}
-                      className={`p-2 rounded-md ${
-                        isPreviewMode
+                      className={`p-2 rounded-md ${isPreviewMode
                           ? 'bg-gray-100 text-gray-700'
                           : 'text-gray-500 hover:bg-gray-100'
-                      }`}
+                        }`}
                       title={isPreviewMode ? 'Edit' : 'Preview'}
                     >
                       <Eye className="h-5 w-5" />
@@ -587,15 +583,15 @@ const GuidelinesEditor = () => {
                 )}
               </div>
             </div>
-            
+
             {selectedSection ? (
               <div className="p-6">
                 {isPreviewMode ? (
                   // Preview Mode
                   <div>
                     <h2 className="text-2xl font-bold text-gray-800 mb-4">{editingTitle}</h2>
-                    <div 
-                      className="prose max-w-none" 
+                    <div
+                      className="prose max-w-none"
                       dangerouslySetInnerHTML={{ __html: editingContent }}
                     ></div>
                   </div>
@@ -614,7 +610,11 @@ const GuidelinesEditor = () => {
                         className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                       />
                     </div>
-                    
+
+                    <div>
+
+                    </div>
+
                     <div>
                       <label htmlFor="section-content" className="block text-sm font-medium text-gray-700 mb-1">
                         Content (HTML)
@@ -630,7 +630,7 @@ const GuidelinesEditor = () => {
                         You can use HTML tags for formatting. Use &lt;h4&gt; for headings, &lt;p&gt; for paragraphs, &lt;ul&gt;/&lt;ol&gt; for lists, and &lt;strong&gt; for emphasis.
                       </p>
                     </div>
-                    
+
                     <div className="flex justify-end pt-4">
                       <button
                         onClick={handleSaveChanges}
@@ -668,7 +668,7 @@ const GuidelinesEditor = () => {
           </div>
         </div>
       </div>
-      
+
       {/* Add Category Modal */}
       {showAddCategoryModal && (
         <div className="fixed inset-0 z-50 overflow-y-auto">
@@ -676,9 +676,9 @@ const GuidelinesEditor = () => {
             <div className="fixed inset-0 transition-opacity" aria-hidden="true">
               <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
             </div>
-            
+
             <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            
+
             <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
               <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div className="sm:flex sm:items-start">
@@ -696,7 +696,7 @@ const GuidelinesEditor = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="mt-4">
                   <label htmlFor="category-title" className="block text-sm font-medium text-gray-700 mb-1">
                     Category Title
@@ -731,7 +731,7 @@ const GuidelinesEditor = () => {
           </div>
         </div>
       )}
-      
+
       {/* Add Section Modal */}
       {showAddSectionModal && (
         <div className="fixed inset-0 z-50 overflow-y-auto">
@@ -739,9 +739,9 @@ const GuidelinesEditor = () => {
             <div className="fixed inset-0 transition-opacity" aria-hidden="true">
               <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
             </div>
-            
+
             <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            
+
             <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
               <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div className="sm:flex sm:items-start">
@@ -759,7 +759,7 @@ const GuidelinesEditor = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="mt-4">
                   <label htmlFor="section-title" className="block text-sm font-medium text-gray-700 mb-1">
                     Section Title
@@ -794,7 +794,7 @@ const GuidelinesEditor = () => {
           </div>
         </div>
       )}
-      
+
       {/* Discard Changes Modal */}
       {showDiscardModal && (
         <div className="fixed inset-0 z-50 overflow-y-auto">
@@ -802,9 +802,9 @@ const GuidelinesEditor = () => {
             <div className="fixed inset-0 transition-opacity" aria-hidden="true">
               <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
             </div>
-            
+
             <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            
+
             <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
               <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div className="sm:flex sm:items-start">

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { ToastContainer } from 'react-toastify';
@@ -30,17 +30,20 @@ import Guidelines from './pages/business/Guidelines';
 
 // Protected route component
 import ProtectedRoute from './components/auth/ProtectedRoute';
+import LandingPage from './pages';
 
 function App() {
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
   return (
     <AuthProvider>
       <Router>
         <div className="app-container">
           <Routes>
+          <Route path="/" element={<LandingPage />} />
+
             {/* Auth routes */}
-            <Route path="/" element={<AuthLayout />}>
+            <Route path="/auth" element={<AuthLayout />}>
               <Route index element={<Navigate to="/login" replace />} />
               <Route path="login" element={<Login />} />
               <Route path="register" element={<Register />} />

@@ -3,18 +3,20 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { toast } from 'react-toastify';
 import { LogIn } from 'lucide-react';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     try {
       await login(email, password);
       // Navigate based on user role
@@ -33,7 +35,7 @@ const Login = () => {
   return (
     <div>
       <h2 className="text-xl font-semibold text-gray-800 mb-6">Sign In</h2>
-      
+
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
@@ -49,7 +51,7 @@ const Login = () => {
             required
           />
         </div>
-        
+
         <div>
           <div className="flex justify-between items-center mb-1">
             <label htmlFor="password" className="block text-sm font-medium text-gray-700">
@@ -59,17 +61,31 @@ const Login = () => {
               Forgot password?
             </a>
           </div>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
-            placeholder="••••••••"
-            required
-          />
+          <div className="relative">
+            <input
+              id="password"
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 pr-10"
+              placeholder="••••••••"
+              required
+            />
+            <button
+              type="button"
+              className="absolute inset-y-0 right-0 pr-3 flex items-center"
+              onClick={() => setShowPassword(!showPassword)}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? (
+                <FaEyeSlash className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+              ) : (
+                <FaEye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+              )}
+            </button>
+          </div>
         </div>
-        
+
         <div>
           <button
             type="submit"
@@ -87,7 +103,7 @@ const Login = () => {
           </button>
         </div>
       </form>
-      
+
       <div className="mt-6 text-center">
         <p className="text-sm text-gray-600">
           Don't have an account?{' '}
@@ -96,8 +112,8 @@ const Login = () => {
           </Link>
         </p>
       </div>
-      
-      <div className="mt-6 border-t border-gray-200 pt-4">
+
+      {/* <div className="mt-6 border-t border-gray-200 pt-4">
         <p className="text-xs text-center text-gray-500">
           Demo Credentials:
         </p>
@@ -113,7 +129,7 @@ const Login = () => {
             <p>business123</p>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
