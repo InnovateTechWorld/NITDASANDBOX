@@ -10,8 +10,8 @@ export default function LandingPage() {
     return (
         <div className="font-lexend relative">
             <div className="relative z-10 bg-[var(--primary)]">
+                {/* NAVBAR */}
                 <div className="px-4 md:px-16">
-                    {/* NAVBAR */}
                     <Navbar />
                 </div>
 
