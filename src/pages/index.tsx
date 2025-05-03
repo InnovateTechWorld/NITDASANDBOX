@@ -11,14 +11,14 @@ export default function LandingPage() {
         <div className="font-lexend relative">
             <div className="relative z-10 bg-[var(--primary)]">
                 {/* NAVBAR */}
-                <div className="px-4 md:px-16">
+                <div className="px-7 md:px-16">
                     <Navbar />
                 </div>
 
                 {/* HERO */}
-                <section className=" text-white px-4 md:px-16 pt-16">
+                <section className=" text-white px-7 md:px-16 pt-16">
                     <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between mb-12">
-                        <h1 className="text-5xl font-bold mb-4 md:w-2/3">Test Your Innovation,<br />Safely and Compliantly.</h1>
+                        <h1 className="text-4xl md:text-5xl font-bold mb-4 md:w-2/3">Test Your Innovation,<br />Safely and Compliantly.</h1>
                         <div className="md:w-1/3 flex flex-col items-start">
                             <p className="mb-6 max-w-md text-[var(--gray)]">
                                 A digital sandbox for Nigerian eCommerce startups to innovate without fear of regulatory penalties.
@@ -42,11 +42,11 @@ export default function LandingPage() {
                     {/* HERO IMAGE */}
                     <div className="relative rounded-2xl">
                         <img src="/images/Hero-1.jpg" alt="Team collaboration" className="w-full h-[60%] rounded-3xl" />
-                        <div className="absolute bottom-12 left-12 bg-[var(--primary)] text-white px-4 py-4 rounded-xl flex items-center space-x-2">
+                        <div className="absolute bottom-3 left-3 md:bottom-12 md:left-12  bg-[var(--primary)] text-white p-3 md:p-4 rounded-xl flex items-center space-x-2">
                             <div className="flex bg-white p-2 rounded-full w-fit justify-center items-center">
-                                <img src="/NITDA_Logo.png" alt="NITDA Logo" className="h-6 inline-block" />
+                                <img src="/NITDA_Logo.png" alt="NITDA Logo" className="h-3 inline-block" />
                             </div>
-                            <span className="font-semibold">NITDA <span>Compliance</span></span>
+                            <span className="font-semibold text-[10px] md:text-lg">NITDA <span>Compliance</span></span>
                         </div>
                     </div>
                 </section>
@@ -64,10 +64,10 @@ export default function LandingPage() {
 
 
             {/* COMPLIANCE CARD */}
-            <section className="px-4 md:px-16 py-16 bg-white flex flex-col md:flex-row items-center gap-16 max-w-6xl mx-auto">
+            <section className="px-7 md:px-16 py-16 bg-white flex flex-col md:flex-row items-center gap-16 max-w-6xl mx-auto">
                 <div className="md:w-1/2 max-h-[395px] overflow-hidden rounded-2xl relative flex items-center justify-center">
                     <img src="/images/Hero-2.png" alt="Woman on laptop" className="rounded-xl w-full object-cover" />
-                    <div className="absolute bottom-8 left-8 bg-[var(--primary)] w-1/2 text-white px-4 py-4 rounded-xl flex items-center space-x-2">
+                    <div className="absolute bottom-0 md:bottom-8 md:left-8 m-4 md:m-0 bg-[var(--primary)] md:w-1/2 text-white px-4 py-4 rounded-xl flex items-center space-x-2">
                         <div className="flex bg-white p-2 rounded-full w-fit justify-center items-center">
                             <img src="/NITDA_Logo.png" alt="NITDA Logo" className="h-6 inline-block" />
                         </div>
@@ -85,8 +85,7 @@ export default function LandingPage() {
                         Join a secure sandbox designed to help Nigerian startups test eCommerce solutions without the fear of regulatory penalties.
                     </p>
                     <Button variant="gradient"
-                     className="w-fit !mt-5"
-                     to="#howItWorks"
+                     className="!w-fit !mt-5"
                      onClick={() => {
                         const featuresSection = document.getElementById('howItWorks');
                         if (featuresSection) {
@@ -97,7 +96,7 @@ export default function LandingPage() {
             </section>
 
             {/* FEATURES SECTION */}
-            <section id="features" className="bg-[#FAFAFA] py-16 px-4 md:px-16 relative">
+            <section id="features" className="bg-[#FAFAFA] py-16 px-7 md:px-16 relative">
                 <div className="max-w-6xl mx-auto text-center space-y-3 z-20">
                     <div className="mb-10 md:w-1/2 text-left">
                         <h2 className="text-3xl font-bold ">Built for Innovation & Trust</h2>
@@ -131,8 +130,8 @@ export default function LandingPage() {
             </section>
 
 
-            <section className="py-16 pl-16 bg-white flex flex-row gap-8 items-center justify-between">
-                <div className="w-1/2">
+            <section className="py-16 md:pl-16 md:pr-0 px-7 bg-white flex flex-col md:flex-row gap-8 items-center justify-between">
+                <div className="md:w-1/2">
                     <div className="text-left mb-8">
                         <h2 className="text-3xl font-bold text-gray-900 mb-4">
                             Built for Startups, Backed by NITDA
@@ -195,7 +194,6 @@ export default function LandingPage() {
                             icon={<div className="border border-[var(--primary)] rounded-full p-1"><FaArrowRight /></div>}
                             iconPosition="right"
                             className="!w-fit"
-                            to="#howItWorks"
                             onClick={() => {
                                 const featuresSection = document.getElementById('howItWorks');
                                 if (featuresSection) {
@@ -207,17 +205,17 @@ export default function LandingPage() {
                         </Button>
                     </div>
                 </div>
-                <div className="bg-[#DCE5FF82] rounded-xl py-8 pl-8 w-1/2  overflow-hidden">
+                <div className="bg-[#DCE5FF82] rounded-xl p-4 md:py-10 md:pl-10 md:pr-0 w-full md:w-1/2 overflow-hidden">
                     <img
                         src="/images/UserPage.png"
                         alt="user dashboard"
-                        className="w-full h-[380px] object-left rounded-xl"
+                        className="w-full md:h-[380px] object-left object-cover rounded-xl"
                     />
                 </div>
             </section>
 
-            <section id="howItWorks" className="py-16 px-4 ">
-                <div className="max-w-4xl mx-auto flex justify-between gap-16">
+            <section id="howItWorks" className="px-7 md:px-16 py-16">
+                <div className="max-w-4xl mx-auto flex flex-col md:flex-row justify-between gap-16">
                     <div className="md:w-1/2">
                         <h2 className="text-3xl font-bold text-gray-900 mb-4">How It Works</h2>
                         <p className="text-sm text-[var(--gray2)] mb-12">Simple, Transparent, Supportive.</p>
@@ -252,8 +250,8 @@ export default function LandingPage() {
                 </div>
             </section>
 
-            <section className="text-[var(--text)] py-16 px-4 flex flex-col items-center">
-                <div className="max-w-4xl mx-auto text-center w-1/2">
+            <section className="text-[var(--text)] px-7 md:px-16 flex flex-col items-center py-16">
+                <div className="max-w-4xl mx-auto text-center md:w-1/2">
                     <h2 className="text-3xl md:text-4xl font-bold mb-6">
                         Build Boldly. We've Got the Compliance Checked.
                     </h2>

@@ -6,16 +6,16 @@ import { Link } from "react-router-dom";
 
 export const Footer = () => {
   return (
-    <footer className="bg-[var(--primary)] text-white pt-12 pb-6 px-16">
-      <div className="flex gap-12 justify-between">
-        <div className="space-y-4 w-1/3">
+    <footer className="bg-[var(--primary)] text-white pt-12 pb-6 px-7 md:px-16">
+      <div className="flex flex-col md:flex-row gap-12 justify-between">
+        <div className="space-y-4 md:w-1/3">
           <img src="/LogoFull.svg" alt="NITDA SandBox Logo" className="h-8" />
 
           <p className="text-[var(--gray)] text-[12px] ">
             Join a sandbox built to help you navigate NOPR and grow with confidence.
           </p>
         </div>
-        <div className="max-w-7xl grid grid-cols-1 md:grid-cols-3 gap-8 w-1/2">
+        <div className="max-w-7xl grid grid-cols-1 md:grid-cols-3 gap-8 md:w-1/2">
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Company</h3>
             <ul className="space-y-2">
