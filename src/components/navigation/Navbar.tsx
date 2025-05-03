@@ -2,7 +2,7 @@ import Button from "../ui/Button"
 
 const Navbar = () => {
     return (
-        <header className=" text-white shadow-sm py-6 flex justify-between items-center border-b border-b-white/50">
+        <header className=" text-white shadow-sm py-5 flex justify-between items-center border-b border-b-white/50">
             <div className="flex items-center space-x-8">
                 <img src="/LogoFull.svg" alt="NITDA SandBox Logo" className="h-8" />
                 <nav className="hidden md:flex space-x-6">

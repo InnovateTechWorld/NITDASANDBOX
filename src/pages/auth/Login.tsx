@@ -107,13 +107,13 @@ const Login = () => {
       <div className="mt-6 text-center">
         <p className="text-sm text-gray-600">
           Don't have an account?{' '}
-          <Link to="/register" className="font-medium text-emerald-600 hover:text-emerald-800">
+          <Link to="/auth/register" className="font-medium text-emerald-600 hover:text-emerald-800">
             Register now
           </Link>
         </p>
       </div>
 
-      {/* <div className="mt-6 border-t border-gray-200 pt-4">
+      <div className="mt-6 border-t border-gray-200 pt-4">
         <p className="text-xs text-center text-gray-500">
           Demo Credentials:
         </p>
@@ -129,7 +129,7 @@ const Login = () => {
             <p>business123</p>
           </div>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 };

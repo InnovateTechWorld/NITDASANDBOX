@@ -17,7 +17,7 @@ const ProtectedRoute = ({ children, role }: ProtectedRouteProps) => {
 
   // If not authenticated, redirect to login
   if (!user) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/auth/login" replace />;
   }
 
   // If role is specified and doesn't match, redirect to appropriate dashboard

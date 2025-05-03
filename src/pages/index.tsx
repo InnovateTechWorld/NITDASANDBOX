@@ -25,7 +25,16 @@ export default function LandingPage() {
                             </p>
                             <div className="flex space-x-4">
                                 <Button variant="white" to="/auth/register">Get Started for Free</Button>
-                                <Button variant="primaryLight" to="#features" className="text-white border-white">Learn More</Button>
+                                <Button
+                                    variant="primaryLight"
+                                    to="#features"
+                                    onClick={() => {
+                                        const featuresSection = document.getElementById('features');
+                                        if (featuresSection) {
+                                            featuresSection.scrollIntoView({ behavior: 'smooth' });
+                                        }
+                                    }}
+                                    className="text-white border-white">Learn More</Button>
                             </div>
                         </div>
                     </div>
@@ -75,7 +84,15 @@ export default function LandingPage() {
                     <p className="text-[var(--gray2)] text-md ">
                         Join a secure sandbox designed to help Nigerian startups test eCommerce solutions without the fear of regulatory penalties.
                     </p>
-                    <Button variant="gradient" className="w-fit !mt-5">Explore Now</Button>
+                    <Button variant="gradient"
+                     className="w-fit !mt-5"
+                     to="#howItWorks"
+                     onClick={() => {
+                        const featuresSection = document.getElementById('howItWorks');
+                        if (featuresSection) {
+                            featuresSection.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }}>Explore Now</Button>
                 </div>
             </section>
 
@@ -179,6 +196,12 @@ export default function LandingPage() {
                             iconPosition="right"
                             className="!w-fit"
                             to="#howItWorks"
+                            onClick={() => {
+                                const featuresSection = document.getElementById('howItWorks');
+                                if (featuresSection) {
+                                    featuresSection.scrollIntoView({ behavior: 'smooth' });
+                                }
+                            }}
                         >
                             See How It Works
                         </Button>
@@ -239,7 +262,7 @@ export default function LandingPage() {
                     </p>
                     <div>
                         <Button
-                            to="#"
+                            to="/auth/register"
                             variant="gradient"
                             className="!w-fit"
                         >
