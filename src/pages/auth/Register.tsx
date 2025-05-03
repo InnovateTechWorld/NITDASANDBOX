@@ -43,9 +43,9 @@ const Register = () => {
 
   return (
     <div>
-      <h2 className="text-xl font-semibold text-gray-800 mb-6">Create an Account</h2>
+      <h2 className="text-xl font-semibold text-gray-800 mb-4">Create an Account</h2>
       
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-3">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
@@ -127,17 +127,17 @@ const Register = () => {
           </div>
         </div>
         
-        <div className="flex items-start mt-4">
+        <div className="flex items-center mt-4">
           <div className="flex items-center h-5">
             <input
               id="terms"
               type="checkbox"
               checked={acceptTerms}
               onChange={(e) => setAcceptTerms(e.target.checked)}
-              className="w-4 h-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"
+              className="w-3 h-3 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"
             />
           </div>
-          <label htmlFor="terms" className="ml-2 text-sm text-gray-600">
+          <label htmlFor="terms" className="ml-2 text-[11px] text-gray-600">
             I agree to the{' '}
             <a href="#" className="text-emerald-600 hover:underline">
               Terms and Conditions
@@ -167,10 +167,10 @@ const Register = () => {
         </div>
       </form>
       
-      <div className="mt-6 text-center">
+      <div className="mt-4 text-center">
         <p className="text-sm text-gray-600">
           Already have an account?{' '}
-          <Link to="/login" className="font-medium text-emerald-600 hover:text-emerald-800">
+          <Link to="/auth/login" className="font-medium text-emerald-600 hover:text-emerald-800">
             Sign in
           </Link>
         </p>

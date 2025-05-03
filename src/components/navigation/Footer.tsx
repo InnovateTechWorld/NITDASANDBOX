@@ -29,7 +29,7 @@ export const Footer = () => {
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Resources</h3>
             <ul className="space-y-2">
-              <li><Link to="/guidelines" className="text-[var(--gray)] text-[12px] hover:text-[#06A85D] transition">Guidelines</Link></li>
+              <li><Link to="/auth/login" className="text-[var(--gray)] text-[12px] hover:text-[#06A85D] transition">Guidelines</Link></li>
             </ul>
           </div>
 

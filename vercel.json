@@ -3,8 +3,8 @@
       { "source": "/dashboard", "destination": "/index.html" },
       { "source": "/", "destination": "/index.html" },
 
-      { "source": "/login", "destination": "/index.html" },
-      { "source": "/register", "destination": "/index.html" },
+      { "source": "/auth/login", "destination": "/index.html" },
+      { "source": "/auth/register", "destination": "/index.html" },
       { "source": "/admin", "destination": "/index.html" },
       { "source": "/admin/applications", "destination": "/index.html" },
       { "source": "/admin/applications/:path*", "destination": "/index.html" },
